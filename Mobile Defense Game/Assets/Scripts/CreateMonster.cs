@@ -14,7 +14,6 @@ public class CreateMonster : MonoBehaviour {
     private IEnumerator coroutine;
 
     void Start () {
-        //GameManager.instance = new GameManager();
         monsterPrefab = monster1Prefab;
         coroutine = process();
         StartCoroutine(coroutine);
@@ -41,20 +40,23 @@ public class CreateMonster : MonoBehaviour {
             if(spawnCount == GameManager.instance.spawnNumber &&
                 GameObject.FindGameObjectWithTag("Monster") == null)
             {
-                GameManager.instance.gameClear();
-                GameManager.instance.round += 1;
-            }
-            else
-            {
-                GameManager.instance.clearRound();
-                spawnCount = 0;
-                if (GameManager.instance.round == 4)
+                if(GameManager.instance.totalRound == GameManager.instance.round)
                 {
-                    monsterPrefab = monster2Prefab;
-                    GameManager.instance.spawnTime = 2.0f;
-                    GameManager.instance.spawnNumber = 10;
+                    GameManager.instance.gameClear();
+                    GameManager.instance.round += 1;
                 }
-             }
+                else
+                {
+                    GameManager.instance.clearRound();
+                    spawnCount = 0;
+                    if (GameManager.instance.round == 4)
+                    {
+                        monsterPrefab = monster2Prefab;
+                        GameManager.instance.spawnTime = 2.0f;
+                        GameManager.instance.spawnNumber = 10;
+                    }
+                }
+            }
             if (spawnCount == 0) yield return new WaitForSeconds(GameManager.instance.roundReadyTime);
             else yield return new WaitForSeconds(GameManager.instance.spawnTime);
         }
